@@ -83,6 +83,7 @@ function openCells(x,y){
 
   grid[x][y].clicked = true
 
+  if(grid[x][y].type == EMPTY){
   openCells(x-1,y)
   openCells(x-1, y+1)
   openCells(x, y+1)
@@ -91,6 +92,7 @@ function openCells(x,y){
   openCells(x+1, y-1)
   openCells(x, y-1)
   openCells(x-1, y-1)
+  }
 }
 
 function clickCell(x, y ){
