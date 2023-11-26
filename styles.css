@@ -226,6 +226,9 @@ img {
 #grid .cell.mine {
   background-color: #ec433c;
 }
+#grid .cell.flagg {
+  background-color: #ec433c;
+}
 #grid .cell.mine::after {
   border-radius: 50%;
   width: 12px;

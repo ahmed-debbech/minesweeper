@@ -15,7 +15,8 @@ function buildGrid(){
 
       let obj = {
         type : EMPTY,
-        clicked : false
+        clicked : false,
+        flagged : false
       }
       row.push(obj)
     }
@@ -95,7 +96,12 @@ function openCells(x,y){
   }
 }
 
-function clickCell(x, y ){
+function clickCell(e, x, y ){
+  if(e.altKey || e.which === 3){
+    grid[x][y].flagged = (!grid[x][y].flagged)
+    print()
+    return;
+  }
   let win = false
   if(grid[x][y].type == EMPTY){
     openCells(x,y)
@@ -124,8 +130,9 @@ function print(over){
         id : i+"-"+j,
         class : 'cell',
         html : '',
-        onclick : 'clickCell('+i + ","+ j +')'
+        onclick : 'clickCell(event, '+i + ","+ j +')'
       }
+
       if(grid[i][j].type == BOMB){
         attrcell.html = "<i>💣</i>"
         attrcell.class += " orange "
@@ -139,7 +146,10 @@ function print(over){
         attrcell.class += " " + countColors[grid[i][j].type] + " "
         attrcell.html = "<i>"+grid[i][j].type+"</i>"
       }
-
+      if(grid[i][j].flagged){
+        attrcell.class += " flaged "
+        attrcell.html = " <span class='flag'></span>"
+      }
       $("<div>", attrcell).appendTo("#r"+i)
     }
   }
