@@ -1,7 +1,8 @@
 let grid = []
 let MAX_X = 20
 let MAX_Y =20
-let MAX_B = 50
+let MAX_B = 10
+let LEFT_B = MAX_B
 
 let EMPTY = 'E'
 let BOMB = 'B'
@@ -99,6 +100,12 @@ function openCells(x,y){
 function clickCell(e, x, y ){
   if(e.altKey || e.which === 3){
     grid[x][y].flagged = (!grid[x][y].flagged)
+    
+    if(grid[x][y].flagged){
+      if(LEFT_B > 0) LEFT_B--
+    }else{
+      if(LEFT_B <= MAX_B) LEFT_B++
+    }
     print()
     return;
   }
@@ -117,6 +124,7 @@ function clickCell(e, x, y ){
 
 function print(over){
   $('#grid').html('')
+  $("#minecounter").html(LEFT_B)
 
   for(let i=0; i<MAX_X; i++){
     let attrrow = {
@@ -134,7 +142,7 @@ function print(over){
       }
 
       if(grid[i][j].type == BOMB){
-        attrcell.html = "<i>💣</i>"
+        attrcell.html = "<i style='font-size: x-small;'>💣</i>"
         attrcell.class += " orange "
       }
 
