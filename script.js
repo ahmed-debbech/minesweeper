@@ -132,7 +132,6 @@ function clickCell(e, x, y ){
       openCells(x,y)
     }else{
       grid[x][y].clicked = true
-      LEFT_B++
       if(grid[x][y].type == BOMB){
         over = "bomb"
       }
