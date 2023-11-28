@@ -1,7 +1,7 @@
 let grid = []
 let MAX_X = 20
 let MAX_Y =20
-let MAX_B = 10
+let MAX_B = 50
 let LEFT_B = MAX_B
 
 let EMPTY = 'E'
@@ -97,29 +97,49 @@ function openCells(x,y){
   }
 }
 
+function checkWin(){
+
+  let k=true
+  for(let i=0; i<=grid.length-1; i++){
+    for(let j =0; j<=grid[i].length-1; j++){
+      if((grid[i][j].flagged == true) || (grid[i][j].clicked == true) ){
+        continue;
+      }else{
+        return "not yet"
+      }
+    }
+  }
+  return "won";
+}
 function clickCell(e, x, y ){
+  let over = "not yet"
   if(e.altKey || e.which === 3){
-    grid[x][y].flagged = (!grid[x][y].flagged)
-    
+
     if(grid[x][y].flagged){
-      if(LEFT_B > 0) LEFT_B--
+      if(LEFT_B <= MAX_B){
+        grid[x][y].flagged = false
+        LEFT_B++
+      }
     }else{
-      if(LEFT_B <= MAX_B) LEFT_B++
+      if(LEFT_B >= 0) {
+        grid[x][y].flagged = true
+        LEFT_B--
+      }
     }
-    print()
-    return;
-  }
-  let win = false
-  if(grid[x][y].type == EMPTY){
-    openCells(x,y)
   }else{
-    grid[x][y].clicked = true
-    if(grid[x][y].type == BOMB){
-      win = true
+    grid[x][y].flagged = false
+    if(grid[x][y].type == EMPTY){
+      openCells(x,y)
+    }else{
+      grid[x][y].clicked = true
+      LEFT_B++
+      if(grid[x][y].type == BOMB){
+        over = "bomb"
+      }
     }
   }
-  print(win)
-  console.log(grid)
+  print(over)
+  print(checkWin())
 }
 
 function print(over){
@@ -161,12 +181,19 @@ function print(over){
       $("<div>", attrcell).appendTo("#r"+i)
     }
   }
-  if (over){
+  if (over == "bomb"){
     setTimeout(()=>{
       $('#grid').html('GAMEOVER')
     },1000)
     return;
-  } 
+  } else{
+    if(over == "won"){
+      setTimeout(()=>{
+        $('#grid').html('YOU WON!')
+      },1000)
+      return;
+    }
+  }
 }
 
 function init(){
